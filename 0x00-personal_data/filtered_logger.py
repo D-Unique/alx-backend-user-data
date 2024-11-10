@@ -2,10 +2,10 @@
 """Module"""
 import logging
 import re
-from typing import List
+from typing import List, Tuple
 
 
-PII_FIELDS = ('name', 'phone', 'ssn', 'password', 'ip',)
+PII_FIELDS: Tuple = ('name', 'phone', 'ssn', 'password', 'ip',)
 
 
 def filter_datum(fields: List[str], redaction: str,
