@@ -17,6 +17,18 @@ def filter_datum(fields: List[str], redaction: str,
     return message
 
 
+def get_logger() -> logging.Logger:
+    """this function creates a custom logger"""
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+    formatter = logging.Formatter(RedactingFormatter.FORMAT)
+    ch = logging.StreamHandler(formatter)
+    logger.addHandler(ch)
+
+    return logger
+
+
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class"""
     REDACTION = "***"
@@ -36,14 +48,3 @@ class RedactingFormatter(logging.Formatter):
                                message=message,
                                separator=RedactingFormatter.SEPARATOR)
         return message
-
-    def get_logger() -> logging.Logger:
-        """this function creates a custom logger"""
-        logger = logging.getLogger("user_data")
-        logger.setLevel(logging.INFO)
-        logger.propagate = False
-        formatter = logging.Formatter(RedactingFormatter.FORMAT)
-        ch = logging.StreamHandler(formatter)
-        logger.addHandler(ch)
-
-        return logger
