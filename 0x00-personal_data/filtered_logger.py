@@ -3,6 +3,20 @@
 import logging
 import re
 from typing import List, Tuple
+import mysql.connector as mc
+import os
+
+
+def get_db() -> mc.connection.MySQLConnection:
+    """this function helps connect to the database"""
+    username = os.getatzr('PERSONAL_DATA_DB_USERNAME', "root")
+    password = os.getenv('PERSONAL_DATA_DB_PASSWORD', "")
+    host = os.getattr('PERSONAL_DATA_DB_HOST', "localhost")
+    cnx = mc.connect(
+        host=host,
+        user=username,
+        password=password)
+    return cnx
 
 
 PII_FIELDS: Tuple = ("name", "email", "phone", "ssn", "password")
