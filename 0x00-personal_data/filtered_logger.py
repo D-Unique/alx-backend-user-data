@@ -14,10 +14,11 @@ def get_db() -> mc.connection.MySQLConnection:
     database = os.getenv('PERSONAL_DATA_DB_NAME')
     host = os.getenv('PERSONAL_DATA_DB_HOST', "localhost")
     cnx = mc.connect(
+        user=username,
+        password=password,
         host=host,
         database=database,
-        user=username,
-        password=password)
+    )
     return cnx
 
 
