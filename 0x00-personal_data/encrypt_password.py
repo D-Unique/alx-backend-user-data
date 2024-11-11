@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+"""this is a module"""
+import bcrypt
+
+
+def hash_password(password: str):
+    """this func returns a hashed password"""
+    byte = password.encode('utf-8')
+    return bcrypt.hashpw(byte, bcrypt.gensalt())
