@@ -9,11 +9,13 @@ import os
 
 def get_db() -> mc.connection.MySQLConnection:
     """this function helps connect to the database"""
-    username = os.getatzr('PERSONAL_DATA_DB_USERNAME', "root")
+    username = os.getenv('PERSONAL_DATA_DB_USERNAME', "root")
     password = os.getenv('PERSONAL_DATA_DB_PASSWORD', "")
-    host = os.getattr('PERSONAL_DATA_DB_HOST', "localhost")
+    database = os.getenv('PERSONAL_DATA_DB_NAME')
+    host = os.getenv('PERSONAL_DATA_DB_HOST', "localhost")
     cnx = mc.connect(
         host=host,
+        database=database,
         user=username,
         password=password)
     return cnx
