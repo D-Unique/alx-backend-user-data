@@ -2,8 +2,8 @@
 """This is the basicauth module"""
 from .auth import Auth
 import base64
-from typing import Tuple
-from ....models.user import User
+from typing import Tuple, TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):

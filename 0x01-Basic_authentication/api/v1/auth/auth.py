@@ -7,9 +7,6 @@ from typing import TypeVar, List
 class Auth:
     """The Auth class"""
 
-    def __init__():
-        pass
-
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """this function checks if the path requires auth"""
         if (path not in excluded_paths or
