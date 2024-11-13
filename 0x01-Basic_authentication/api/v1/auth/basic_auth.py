@@ -9,6 +9,19 @@ from ....models.user import User
 class BasicAuth(Auth):
     """Implement basic authentication"""
 
+
+    def extract_base64_authorization_header(self, authorization_header: str) -> str:
+        """ This function extract the base64 part of authorization hees """
+        if authorization_header is None or not isinstance(authorization_header, str):
+            return None
+        dc = authorization_header.startswith('Basic ')
+        if not dc:
+            return None
+        else:
+            [basic, byt] = authorization_header.split(' ', 1)
+            return byt
+        
+
     def decode_base64_authorization_header(
             self, base64_authorization_header: str
             ) -> str:
@@ -35,6 +48,7 @@ class BasicAuth(Auth):
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str
             ) -> (str, str):
+        """this method extract credentials"""
         if not decoded_base64_authorization_header or \
                 not isinstance(decoded_base64_authorization_header, str) or \
                 ':' not in decoded_base64_authorization_header:
@@ -70,3 +84,13 @@ class BasicAuth(Auth):
         if not valid:
             return None
         return user
+    
+    def current_user(self, request=None) -> TypeVar('User'):
+        """ this function return users obj from  a requests"""
+        auth = Auth.authorization_header(request=request)
+        byt = self.extract_base64_authorization_header(auth)
+        dec = self.decode_base64_authorization_header(byt)
+        dic = self.extract_user_credentials(dec)
+        [usr, pw] = dic.split(':', 1)
+        usr_obj = self.user_object_from_credentials(user_email=usr, user_pwd=pw)
+        return usr_obj
