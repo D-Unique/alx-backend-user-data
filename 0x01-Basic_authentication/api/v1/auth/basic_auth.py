@@ -2,6 +2,7 @@
 """This is the basicauth module"""
 from .auth import Auth
 import base64
+from typing import Tuple
 
 
 class BasicAuth(Auth):
@@ -29,3 +30,14 @@ class BasicAuth(Auth):
             return decoded_bytes.decode('utf-8')
         except (TypeError, ValueError, UnicodeDecodeError):
             return None
+
+    def extract_user_credentials(
+            self, decoded_base64_authorization_header: str
+            ) -> (str, str):
+        if not decoded_base64_authorization_header or \
+                not isinstance(decoded_base64_authorization_header, str) or \
+                ':' not in decoded_base64_authorization_header:
+            return None
+        else:
+            email, pw = decoded_base64_authorization_header.split(':', 1)
+            return f"{email}:{pw}"
