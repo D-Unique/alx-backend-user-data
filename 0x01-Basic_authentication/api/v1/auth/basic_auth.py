@@ -8,11 +8,12 @@ from models.user import User
 
 class BasicAuth(Auth):
     """Implement basic authentication"""
-    
 
-    def extract_base64_authorization_header(self, authorization_header: str) -> str:
+    def extract_base64_authorization_header(
+            self, authorization_header: str) -> str:
         """This function extract the base64 part of authorization header"""
-        if authorization_header is None or not isinstance(authorization_header, str):
+        if authorization_header is None or not isinstance(
+                authorization_header, str):
             return None
         dc = authorization_header.startswith('Basic ')
         if not dc:
@@ -20,3 +21,25 @@ class BasicAuth(Auth):
         else:
             [basic, byt] = authorization_header.split(' ', 1)
             return byt
+
+    def decode_base64_authorization_header(
+            self, base64_authorization_header: str
+            ) -> str:
+        """Decodes a Base64-encoded authorization header.
+
+        Args:
+            base64_authorization_header: The
+            Base64-encoded authorization header.
+
+        Returns:
+            The decoded string, or None if the header is invalid."""
+
+        if not base64_authorization_header or \
+                not isinstance(base64_authorization_header, str):
+            return None
+
+        try:
+            decoded_bytes = base64.b64decode(base64_authorization_header)
+            return decoded_bytes.decode('utf-8')
+        except (TypeError, ValueError, UnicodeDecodeError):
+            return None
