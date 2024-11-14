@@ -82,3 +82,16 @@ class BasicAuth(Auth):
         if not valid:
             return None
         return user
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """this function return users obj from  a requests"""
+        auth = self.authorization_header(request=request)
+        byt = self.extract_base64_authorization_header(auth)
+        dec = self.decode_base64_authorization_header(byt)
+        tup = self.extract_user_credentials(dec)
+        (usr, pw) = tup
+        usr_obj = self.user_object_from_credentials(user_email=usr, user_pwd=pw)
+        return usr_obj
+
+
+
