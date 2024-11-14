@@ -90,8 +90,6 @@ class BasicAuth(Auth):
         dec = self.decode_base64_authorization_header(byt)
         tup = self.extract_user_credentials(dec)
         (usr, pw) = tup
-        usr_obj = self.user_object_from_credentials(user_email=usr, user_pwd=pw)
+        usr_obj = self.user_object_from_credentials(
+            user_email=usr, user_pwd=pw)
         return usr_obj
-
-
-
