@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""This is the basicauth module"""
+"""This is the basicauth module
 from .auth import Auth
 import base64
 from typing import Tuple, TypeVar
@@ -7,11 +7,11 @@ from models.user import User
 
 
 class BasicAuth(Auth):
-    """Implement basic authentication"""
+    Implement basic authentication
 
 
     def extract_base64_authorization_header(self, authorization_header: str) -> str:
-        """ This function extract the base64 part of authorization hees """
+         This function extract the base64 part of authorization hees
         if authorization_header is None or not isinstance(authorization_header, str):
             return None
         dc = authorization_header.startswith('Basic ')
@@ -25,7 +25,7 @@ class BasicAuth(Auth):
     def decode_base64_authorization_header(
             self, base64_authorization_header: str
             ) -> str:
-        """Decodes a Base64-encoded authorization header.
+        Decodes a Base64-encoded authorization header.
 
         Args:
             base64_authorization_header: The
@@ -33,7 +33,7 @@ class BasicAuth(Auth):
 
         Returns:
             The decoded string, or None if the header is invalid.
-        """
+        
 
         if not base64_authorization_header or \
                 not isinstance(base64_authorization_header, str):
@@ -48,7 +48,7 @@ class BasicAuth(Auth):
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str
             ) -> (str, str):
-        """this method extract credentials"""
+        this method extract credentials
         if not decoded_base64_authorization_header or \
                 not isinstance(decoded_base64_authorization_header, str) or \
                 ':' not in decoded_base64_authorization_header:
@@ -60,7 +60,7 @@ class BasicAuth(Auth):
     def user_object_from_credentials(
             self, user_email: str, user_pwd: str
                                      ) -> TypeVar('User'):
-        """Retrieves a User instance based on
+        Retrieves a User instance based on
         email and password.
 
         Args:
@@ -69,7 +69,7 @@ class BasicAuth(Auth):
 
         Returns:
         The User instance if credentials are valid, otherwise None.
-        """
+        
 
         if user_email is None or not isinstance(user_email, str):
             return None
@@ -86,11 +86,11 @@ class BasicAuth(Auth):
         return user
     
     def current_user(self, request=None) -> TypeVar('User'):
-        """ this function return users obj from  a requests"""
+         this function return users obj from  a requests
         auth = Auth.authorization_header(request=request)
         byt = self.extract_base64_authorization_header(auth)
         dec = self.decode_base64_authorization_header(byt)
         dic = self.extract_user_credentials(dec)
         [usr, pw] = dic.split(':', 1)
         usr_obj = self.user_object_from_credentials(user_email=usr, user_pwd=pw)
-        return usr_obj
+        return usr_obj"""
