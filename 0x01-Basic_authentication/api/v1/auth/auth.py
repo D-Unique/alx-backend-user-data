@@ -11,8 +11,6 @@ class Auth:
         """this function checks if the path requires auth"""
         if path is None:
             return True
-        if len(excluded_paths) <= 0:
-            return True
         if excluded_paths is None:
             return True
         if not path.endswith('/'):
