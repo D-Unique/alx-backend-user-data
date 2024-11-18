@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
+from  typing import Dict
 from user import User
 
 from user import Base
@@ -32,11 +33,10 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    @property
     def add_user(self, email: str, hashed_password: str) -> User:
         """Add a new user to the database
         """
-        new_user = User(email=email, hashed_password=hashed_password)
+        new_user = User(email=email, hashed_password=hashed_password, session_id="", reset_token="")
         self._session.add(new_user)
         self._session.commit()
         return new_user
@@ -48,3 +48,15 @@ class DB:
         if not kwargs:
             raise InvalidRequestError
         return self._session.query(User).filter_by(**kwargs).first()
+    
+    def update_user(self, user_id: int, **kwargs: Dict) -> None:
+        """Update a user
+        """
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError
+        self._session.commit()
+        return None
