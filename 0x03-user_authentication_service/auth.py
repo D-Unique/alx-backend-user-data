@@ -22,7 +22,7 @@ class Auth:
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
 
-
+ 
 def _hash_password(password: str) -> bytes:
     """Hashes a password
     """
