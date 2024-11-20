@@ -38,3 +38,23 @@ class DB:
         self._session.add(new_user)
         self._session.commit()
         return new_user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find a user by the passed arguments"""
+        if not self._session.query(User).filter_by(**kwargs).first():
+            raise NoResultFound
+        if not kwargs:
+            raise InvalidRequestError
+        return self._session.query(User).filter_by(**kwargs).first()
+
+    def update_user(self, user_id: int, **kwargs: Dict) -> None:
+        """Update a user
+        """
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError
+        self._session.commit()
+        return None
