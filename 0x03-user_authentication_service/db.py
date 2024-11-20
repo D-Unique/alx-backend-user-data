@@ -6,10 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
-from  typing import Dict
-from user import User
-
-from user import Base
+from user import Base, User
 
 
 class DB:
@@ -48,7 +45,7 @@ class DB:
         if not kwargs:
             raise InvalidRequestError
         return self._session.query(User).filter_by(**kwargs).first()
-    
+
     def update_user(self, user_id: int, **kwargs: Dict) -> None:
         """Update a user
         """
