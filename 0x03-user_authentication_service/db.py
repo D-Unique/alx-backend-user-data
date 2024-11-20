@@ -7,7 +7,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
-from typing import Dict
 from user import Base, User
 
 
@@ -42,13 +41,15 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """Find a user by the passed arguments"""
-        if not self._session.query(User).filter_by(**kwargs).one():
-            raise NoResultFound
-        if not kwargs:
-            raise InvalidRequestError
-        return self._session.query(User).filter_by(**kwargs).one()
+        try:
+            user = self._session.query(User).filter_by(**kwargs).one()
+        except NoResultFound:
+            raise 
+        except InvalidRequestError:
+            raise 
+        return user
 
-    def update_user(self, user_id: int, **kwargs: Dict) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user
         """
         user = self.find_user_by(id=user_id)
