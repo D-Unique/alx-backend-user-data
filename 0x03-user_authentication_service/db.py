@@ -40,3 +40,17 @@ class DB:
         session.commit()
         session.refresh(new_user)
         return new_user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find a user by the passed arguments"""
+        query = self._session.query(User)
+        for key, value in kwargs.items():
+            if key not in ["id", "email", "hashed_password"]:
+                raise InvalidRequestError
+            query = query.filter_by(**{key: value})
+
+        result = query.first()
+        if not result:
+            raise NoResultFound
+
+        return result
