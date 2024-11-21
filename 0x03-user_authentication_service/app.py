@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """This module contain the flask app"""
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, abort
 from auth import Auth
 
 
@@ -15,11 +15,12 @@ def home() -> str:
 
 
 @app.route("/users", methods=["POST"], strict_slashes=False)
-def register_user(email: str, password: bytes):
+def register_user(email: str, password: str):
     try:
         AUTH.register_user(email=email, password=password)
         return jsonify({"email": {email}, "message": "user created"})
     except ValueError:
+        abort(400)
         return jsonify({"message": "email already registered"})
 
 
