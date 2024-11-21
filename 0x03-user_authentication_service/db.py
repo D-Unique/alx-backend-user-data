@@ -35,17 +35,16 @@ class DB:
         """Add a new user to the database
         """
         new_user = User(email=email, hashed_password=hashed_password)
-        session = self._session
-        session.add(new_user)
-        session.commit()
-        session.refresh(new_user)
+        self._session.add(new_user)
+        self._session.commit()
         return new_user
 
     def find_user_by(self, **kwargs) -> User:
         """Find a user by the passed arguments"""
         query = self._session.query(User)
+        allowed_keys = User.__table__.columns.keys()
         for key, value in kwargs.items():
-            if key not in ["id", "email", "hashed_password"]:
+            if key not in allowed_keys:
                 raise InvalidRequestError
             query = query.filter_by(**{key: value})
 
