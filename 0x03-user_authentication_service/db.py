@@ -31,6 +31,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
+    @property
     def add_user(self, email: str, hashed_password: str) -> User:
         """Add a new user to the database
         """
@@ -38,24 +39,3 @@ class DB:
         self._session.add(new_user)
         self._session.commit()
         return new_user
-
-    def find_user_by(self, **kwargs) -> User:
-        """Find a user by the passed arguments"""
-        try:
-            user = self._session.query(User).filter_by(**kwargs).one()
-        except NoResultFound:
-            raise 
-        except InvalidRequestError:
-            raise 
-        return user
-
-    def update_user(self, user_id: int, **kwargs) -> None:
-        """Update a user
-        """
-        user = self.find_user_by(id=user_id)
-        for key, value in kwargs.items():
-            if hasattr(user, key):
-                setattr(user, key, value)
-            else:
-                raise ValueError
-        self._session.commit()
