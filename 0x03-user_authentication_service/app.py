@@ -49,11 +49,28 @@ def login():
 
 @app.route("/sessions", methods=['DELETE'])
 def logout():
+    """logout route"""
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
     if user:
         AUTH.destroy_session(user.id)
         return redirect(url_for('home'), code=302)
+    else:
+        abort(403)
+
+
+@app.route("/profile", methods=['GET'])
+def profile():
+    """view profile"""
+    session_id = request.cookies.get('session_id')
+    if session_id:
+        users = AUTH.get_user_from_session_id(session_id)
+        if users:
+            response = jsonify({"email": users.email})
+            response.status('200')
+            return response
+        else:
+            abort(403)
     else:
         abort(403)
 
