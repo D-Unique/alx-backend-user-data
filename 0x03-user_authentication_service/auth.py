@@ -82,7 +82,6 @@ class Auth:
                 user.id, hashed_password=password,
                 reset_token=None
                 )
-            self._db.update_user(user.id, )
             return None
         except NoResultFound:
             raise ValueError
