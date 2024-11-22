@@ -44,50 +44,18 @@ class Auth:
         except NoResultFound:
             return None
 
-    def get_user_from_session_id(self, session_id: str) -> User:
-        """
-        get user from session id
-        """
-        if session_id:
-            try:
-                user = self._db.find_user_by(session_id=session_id)
-                return user
-            except NoResultFound:
-                return None
-        else:
+    def get_user_from_session_id(self, session_id: str) -> User | None:
+        """Get a user from a session_id"""
+        if session_id is None:
             return None
+        user = self._db.find_user_by(session_id=session_id)
+        if user is None:
+            return None
+        return user
 
     def destroy_session(self, user_id: int) -> None:
-        """
-        destroys a session
-        """
-        self._db.update_user(user_id, session_id=None)
+        self._db.update_user(user_id=user_id, session_id=None)
         return None
-
-    def get_reset_password_token(self, email: str) -> str:
-        """
-        generate password reset token
-        """
-        try:
-            user = self._db.find_user_by(email=email)
-            reset_token = _generate_uuid()
-            self._db.update_user(user.id, reset_token=reset_token)
-            return user.reset_token
-        except NoResultFound:
-            raise ValueError
-
-    def update_password(self, reset_token: str, password: str) -> None:
-        """
-        update password
-        """
-        try:
-            user = self._db.find_user_by(reset_token=reset_token)
-            hsh_pass = _hash_password(password)
-            self._db.update_user(
-                user.id, hashed_password=hsh_pass, reset_token=None)
-            return None
-        except NoResultFound:
-            raise ValueError
 
 
 def _hash_password(password: str) -> bytes:
