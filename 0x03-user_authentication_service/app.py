@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """This module contain the flask app"""
-from flask import Flask, render_template, jsonify, request, abort, redirect, url_for
+from flask import Flask, render_template, jsonify, request, abort
+from flask import redirect, url_for
 from auth import Auth
 
 
@@ -52,7 +53,7 @@ def logout():
     user = AUTH.get_user_from_session_id(session_id)
     if user:
         AUTH.destroy_session(user.id)
-        redirect(url_for('home'), code=302)
+        return redirect(url_for('home'), code=302)
     else:
         abort(403)
 
