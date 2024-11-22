@@ -45,15 +45,17 @@ class Auth:
             return None
 
     def get_user_from_session_id(self, session_id: str) -> User:
-        """Get a user from a session_id"""
-        if session_id is None:
-            return None
-        else:
+        """
+        get user from session id
+        """
+        if session_id:
             try:
                 user = self._db.find_user_by(session_id=session_id)
                 return user
             except NoResultFound:
                 return None
+        else:
+            return None
 
     def destroy_session(self, user_id: int) -> None:
         """
