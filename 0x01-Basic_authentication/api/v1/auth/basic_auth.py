@@ -6,9 +6,6 @@ from typing import Tuple, TypeVar
 from models.user import User
 
 
-user = TypeVar('User', None, Tuple[str, str])
-
-
 class BasicAuth(Auth):
     """Implement basic authentication"""
 
@@ -49,7 +46,7 @@ class BasicAuth(Auth):
 
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str
-            ) -> Tuple[str, str]:
+            ) -> (str, str):
         """this method extract credentials"""
         if not decoded_base64_authorization_header or \
                 not isinstance(decoded_base64_authorization_header, str) or \
@@ -86,7 +83,7 @@ class BasicAuth(Auth):
             return None
         return user
 
-    def current_user(self, request=None) -> user:
+    def current_user(self, request=None) -> TypeVar('User'):
         """this function return users obj from  a requests"""
         auth = self.authorization_header(request=request)
         byt = self.extract_base64_authorization_header(auth)
