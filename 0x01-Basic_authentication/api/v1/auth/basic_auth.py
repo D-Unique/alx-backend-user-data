@@ -6,6 +6,9 @@ from typing import Tuple, TypeVar
 from models.user import User
 
 
+user = TypeVar('user', None, Tuple)
+
+
 class BasicAuth(Auth):
     """Implement basic authentication"""
 
@@ -58,7 +61,7 @@ class BasicAuth(Auth):
 
     def user_object_from_credentials(
             self, user_email: str, user_pwd: str
-                                     ) -> TypeVar('User'):
+                                     ) -> user:
         """Retrieves a User instance based on
         email and password.
 
