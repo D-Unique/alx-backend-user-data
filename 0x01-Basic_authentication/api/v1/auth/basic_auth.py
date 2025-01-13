@@ -5,7 +5,7 @@ import base64
 from typing import Tuple, TypeVar
 from models.user import User
 
-
+User = TypeVar('User', Tuple[str, str])
 class BasicAuth(Auth):
     """Implement basic authentication"""
 
@@ -46,7 +46,7 @@ class BasicAuth(Auth):
 
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str
-            ) -> (str, str):
+            ) -> Tuple[str, str]:
         """this method extract credentials"""
         if not decoded_base64_authorization_header or \
                 not isinstance(decoded_base64_authorization_header, str) or \
@@ -58,7 +58,7 @@ class BasicAuth(Auth):
 
     def user_object_from_credentials(
             self, user_email: str, user_pwd: str
-                                     ) -> TypeVar('User'):
+                                     ) -> User| None:
         """Retrieves a User instance based on
         email and password.
 
@@ -83,7 +83,7 @@ class BasicAuth(Auth):
             return None
         return user
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None) -> User:
         """this function return users obj from  a requests"""
         auth = self.authorization_header(request=request)
         byt = self.extract_base64_authorization_header(auth)
