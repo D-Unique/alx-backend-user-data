@@ -6,7 +6,7 @@ from typing import Tuple, TypeVar
 from models.user import User
 
 
-user = TypeVar('user', None, Tuple)
+user = TypeVar('user', None, Tuple[str, str])
 
 
 class BasicAuth(Auth):
@@ -86,7 +86,7 @@ class BasicAuth(Auth):
             return None
         return user
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None) -> user:
         """this function return users obj from  a requests"""
         auth = self.authorization_header(request=request)
         byt = self.extract_base64_authorization_header(auth)
