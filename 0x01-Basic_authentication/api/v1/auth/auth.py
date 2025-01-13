@@ -16,6 +16,11 @@ class Auth:
             return True
         if excluded_paths is None:
             return True
+        for _ in excluded_paths:
+            if _.endswith('*'):
+                xpath = _[:-1]
+                if path == xpath:
+                    return False
         if not path.endswith('/'):
             path = path + '/'
         if path not in excluded_paths:
