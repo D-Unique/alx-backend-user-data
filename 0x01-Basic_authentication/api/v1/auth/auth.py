@@ -4,7 +4,7 @@
 from typing import TypeVar, Tuple, List
 
 
-user = TypeVar('user', None, Tuple)
+user = TypeVar('user', None, Tuple[str, str])
 
 
 class Auth:
