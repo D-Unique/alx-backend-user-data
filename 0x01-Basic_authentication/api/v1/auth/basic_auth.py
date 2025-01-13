@@ -5,7 +5,10 @@ import base64
 from typing import Tuple, TypeVar
 from models.user import User
 
-user = TypeVar('User', None,Tuple[str, str])
+
+user = TypeVar('User', None, Tuple[str, str])
+
+
 class BasicAuth(Auth):
     """Implement basic authentication"""
 
