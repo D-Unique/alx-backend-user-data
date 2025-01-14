@@ -2,6 +2,7 @@
 """Session Authentication Class
 """
 from api.v1.auth.auth import Auth
+import os
 import uuid
 
 
@@ -29,3 +30,11 @@ class SessionAuth(Auth):
         if type(session_id) is not str:
             return None
         return self.user_id_by_session_id.get(session_id)
+
+    def session_cookie(self, request=None):
+        """Return a session cookie value from a request
+        """
+        if request is None:
+            return None
+        _my_session_id = os.getenv('SESSION_NAME')
+        request.cookies.get(_my_session_id)
