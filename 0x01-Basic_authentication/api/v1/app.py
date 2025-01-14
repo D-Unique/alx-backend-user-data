@@ -7,6 +7,7 @@ from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
+from flask import g
 """from api.v1.auth.basic_auth import BasicAuth"""
 
 
@@ -61,8 +62,7 @@ def before_request() -> str:
     if auth.current_user(request) is None:
         abort(403)
         return jsonify({"error": "Forbidden"}), 403
-    
-    request.current_user = auth.current_user(request)
+    g.__setattr__('current_user', auth.current_user(request))
 
 
 if __name__ == "__main__":
